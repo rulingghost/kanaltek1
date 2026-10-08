@@ -24,7 +24,7 @@ Proje statik web mimarisindedir ve `vercel.json` yapılandırması hazırdır.
 ### Vercel Dashboard İle Tek Tıkla Kurulum:
 1. [vercel.com](https://vercel.com) adresine gidin ve GitHub hesabınızla giriş yapın.
 2. **"Add New Project"** butonuna tıklayın.
-3. `rulingghost/kanaltek` deposunu seçin.
+3. `rulingghost/kanaltek1` deposunu seçin.
 4. Framework ayarını **Other** olarak bırakıp **Deploy** butonuna basın.
 5. Siteniz saniyeler içinde SSL sertifikalı olarak yayında olacaktır.
 
@@ -34,6 +34,7 @@ Proje statik web mimarisindedir ve `vercel.json` yapılandırması hazırdır.
 
 ```
 ├── index.html        # Ana iniş sayfası (SEO & Schema.org FAQPage/LocalBusiness destekli)
+├── assets/           # Görseller, logolar ve referans materyalleri
 ├── css/
 │   └── style.css     # Endüstriyel mavi/turuncu tasarım sistemi, responsive kurallar
 ├── js/
