@@ -1,0 +1,5 @@
+{
+  "extensions.ignoreRecommendations": true,
+  "python.experiments.optInto": [],
+  "python.experiments.optOutFrom": ["All"]
+}

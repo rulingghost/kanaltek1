@@ -3,6 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <script>
+    (function() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('view') === 'desktop') {
+          localStorage.setItem('force_desktop', 'true');
+        } else if (params.get('view') === 'mobile') {
+          localStorage.removeItem('force_desktop');
+          window.location.replace('mobile.html');
+        } else if (localStorage.getItem('force_desktop') !== 'true') {
+          var isMobileWidth = (window.innerWidth || screen.width) <= 768;
+          var isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          if (isMobileWidth || isMobileUA) {
+            window.location.replace('mobile.html');
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
   <title>Kazısız Kanal Kaplama ve Boru Rehabilitasyon Çözümleri | KANALTEK</title>
   
   <!-- Meta Descriptions for SEO & Conversions -->
@@ -722,21 +741,24 @@
           </div>
         </div>
 
-        <!-- 2. Petkim Star Rafineri DN1400 Before/After -->
-        <div class="gallery-item-card" data-cat="cctv">
-          <div class="before-after-card-img">
-            <div class="before-col">
-              <span class="ba-badge before">ÖNCE</span>
-              <img src="assets/images/cipp-petkim-before.png" alt="Petkim Aliağa DN1400 Kaplama Öncesi">
-            </div>
-            <div class="after-col">
-              <span class="ba-badge after">SONRA</span>
-              <img src="assets/images/cipp-petkim-after.png" alt="Petkim Aliağa DN1400 Kaplama Sonrası">
+        <!-- 2. KANALTEK Saha Uygulama & Tanıtım Videosu (YouTube) -->
+        <div class="gallery-item-card gallery-video-card" data-cat="cctv cipp video">
+          <div class="gallery-video-wrapper" id="ytVideoWrapper">
+            <img src="assets/images/yt-kanaltek-video.jpg" alt="Kanaltek Kazısız Teknolojiler Saha Uygulama Videosu" class="gallery-video-thumb">
+            <div class="gallery-video-overlay">
+              <span class="video-platform-badge">
+                <svg width="15" height="15" fill="#ff0000" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>YouTube Resmi Video</span>
+              </span>
+              <button class="gallery-play-btn" id="playYtBtn" data-video-id="UBNCFEpf95U" aria-label="Videoyu Oynat">
+                <svg width="26" height="26" fill="#ffffff" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <span class="video-duration-pill">Canlı Saha Çekimi</span>
             </div>
           </div>
           <div class="gallery-card-body">
-            <h4>Petkim Aliağa Star Rafineri OWS Hattı (DN 1400)</h4>
-            <p>Endüstriyel asit ve hidrokarbon hattında eksiz kompozit koruma.</p>
+            <h4>Kanaltek Kazısız Teknolojiler Saha Uygulaması</h4>
+            <p>CIPP UV robotik kaplama ve Fold & Form sahasında boru rehabilitasyon uygulamaları.</p>
           </div>
         </div>
 
@@ -820,7 +842,7 @@
         <div class="section-tag">2004'TEN BERİ GÜVENİLİR ORTAK</div>
         <h2 class="section-title">Resmi Referanslarımız ve Tamamlanan Projeler</h2>
         <p class="section-subtitle">
-          İller Bankası, İSKİ, ASKİ, Karayolları, Petkim SOCAR ve sanayi liderleri ile tamamladığımız 850 km+ boru rehabilitasyonu referans listemiz.
+          İller Bankası, İSKİ, ASKİ, Karayolları, Bursa BUSKİ ve sanayi liderleri ile tamamladığımız 850 km+ boru rehabilitasyonu referans listemiz.
         </p>
       </div>
 
@@ -864,13 +886,13 @@
           </div>
         </div>
 
-        <!-- 4. Petkim / SOCAR -->
+        <!-- 4. DOSAB Demirtaş OSB -->
         <div class="ref-card" data-ref-cat="industry">
-          <div class="ref-logo-box"><img src="assets/references/logos/petkim-socar.png" alt="Petkim SOCAR"></div>
+          <div class="ref-logo-box"><img src="assets/references/logos/dosab.svg" alt="DOSAB Organize Sanayi Bölgesi"></div>
           <div class="ref-info-box">
-            <h5>Petkim / SOCAR</h5>
-            <p class="ref-project-desc">OWS Atıksu Hattı DN1400 - DN1500</p>
-            <span class="ref-year-badge">2015 - 2025 • Aliağa</span>
+            <h5>DOSAB Demirtaş OSB</h5>
+            <p class="ref-project-desc">Endüstriyel Kolektör & Kanal Kaplama</p>
+            <span class="ref-year-badge">2018 - 2024 • Bursa</span>
           </div>
         </div>
 
@@ -1290,7 +1312,10 @@
 
       <div class="footer-bottom-bar">
         <div>© 2026 KANALTEK Kazısız Teknolojiler Ltd. Şti. Tüm Hakları Saklıdır.</div>
-        <div>CIPP UV ve Fold & Form Kazısız Boru Rehabilitasyon Sistemleri</div>
+        <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+          <span>CIPP UV ve Fold & Form Kazısız Boru Rehabilitasyon Sistemleri</span>
+          <a href="mobile.html" onclick="localStorage.removeItem('force_desktop');" style="color: #38bdf8; text-decoration: underline; font-weight: 500;">📱 Mobil Sürümü Aç</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -1370,6 +1395,26 @@
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </button>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: VIDEO PLAYER MODAL (YOUTUBE TANITIM & SAHA UYGULAMASI)
+       ======================================================================== -->
+  <div class="modal-overlay" id="videoModal">
+    <div class="modal-container large" style="max-width: 920px; padding: 0; overflow: hidden; background: #000000; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);">
+      <div class="modal-header" style="background: #0f172a; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 14px 20px;">
+        <h3 style="color: #ffffff; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; margin: 0;">
+          <svg width="22" height="22" fill="#ef4444" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          Kanaltek Kazısız Teknolojiler Saha Uygulaması & Tanıtım Videosu
+        </h3>
+        <button class="modal-close-btn" id="closeVideoModal" aria-label="Kapat" style="color: #ffffff; font-size: 1.3rem;">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 0; background: #000000;">
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+          <iframe id="videoModalIframe" src="" title="Kanaltek Saha Uygulaması" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
       </div>
     </div>
   </div>

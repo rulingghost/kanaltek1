@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initReferenceFilter();
   initPdfModal();
   initQuoteModal();
+  initVideoPlayer();
   initLeadForms();
 });
 
@@ -88,8 +89,9 @@ function initGalleryFilter() {
       btn.classList.add('active');
 
       items.forEach(item => {
-        const itemCat = item.getAttribute('data-cat');
-        if (filter === 'all' || itemCat === filter) {
+        const itemCat = item.getAttribute('data-cat') || '';
+        const cats = itemCat.split(' ');
+        if (filter === 'all' || itemCat === filter || cats.includes(filter)) {
           item.style.display = 'block';
         } else {
           item.style.display = 'none';
@@ -307,3 +309,75 @@ function initLeadForms() {
     });
   });
 }
+
+/* ==========================================================================
+   7. YOUTUBE VİDEO OYNATICI (KART İÇİ & MODAL OYNATMA)
+   ========================================================================== */
+function initVideoPlayer() {
+  const videoWrapper = document.getElementById('ytVideoWrapper');
+  const videoModal = document.getElementById('videoModal');
+  const videoModalIframe = document.getElementById('videoModalIframe');
+  const closeVideoBtn = document.getElementById('closeVideoModal');
+  const heroVideoBtns = document.querySelectorAll('.open-video-modal');
+
+  const videoId = 'UBNCFEpf95U';
+
+  function playInline() {
+    if (!videoWrapper || videoWrapper.classList.contains('playing')) return;
+    videoWrapper.classList.add('playing');
+    videoWrapper.innerHTML = `
+      <iframe 
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
+        title="Kanaltek Saha Uygulaması" 
+        style="width: 100%; height: 100%; border: 0;" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    `;
+    videoWrapper.style.cursor = 'default';
+  }
+
+  function openModal() {
+    if (!videoModal || !videoModalIframe) return;
+    videoModalIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+    videoModal.classList.add('active');
+  }
+
+  function closeModal() {
+    if (!videoModal || !videoModalIframe) return;
+    videoModal.classList.remove('active');
+    videoModalIframe.src = '';
+  }
+
+  if (videoWrapper) {
+    videoWrapper.addEventListener('click', (e) => {
+      if (!videoWrapper.classList.contains('playing')) {
+        playInline();
+      }
+    });
+  }
+
+  heroVideoBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  if (closeVideoBtn) {
+    closeVideoBtn.addEventListener('click', closeModal);
+  }
+
+  if (videoModal) {
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) closeModal();
+    });
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && videoModal && videoModal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+}
+
