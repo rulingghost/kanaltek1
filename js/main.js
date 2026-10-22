@@ -145,26 +145,66 @@ function initPdfModal() {
   if (!modal || !iframe) return;
 
   const docMap = {
-    'ref': {
-      url: 'assets/docs/KANALTEK_Referanslar_2026.pdf',
-      title: 'KANALTEK Resmi Referanslar Listesi 2026 (4 Sayfa)',
-      filename: 'KANALTEK_Referanslar_2026.pdf'
+    'sunum-tr': {
+      url: 'assets/docs/KANALTEK_Sunum_TR.pdf',
+      title: 'KANALTEK Kazısız Kanal Kaplama ve Boru Rehabilitasyon Sunumu (TR - 34 Sayfa)',
+      filename: 'KANALTEK_Sunum_TR.pdf'
     },
     'cipp': {
-      url: 'assets/docs/CIPP_UV_Teknolojisi.pdf',
-      title: 'CIPP UV Teknolojisi ve Uygulama Sunumu (21 Sayfa)',
-      filename: 'CIPP_UV_Teknolojisi.pdf'
+      url: 'assets/docs/CIPP_UV_Presentation_EN.pdf',
+      title: 'CIPP UV Cured-in-Place Pipe Rehabilitation Presentation (ENG - 21 Sayfa)',
+      filename: 'CIPP_UV_Presentation_EN.pdf'
     },
     'fold': {
-      url: 'assets/docs/FOLD_FORM_Teknolojisi.pdf',
-      title: 'Fold & Form Teknolojisi ve Uygulama Sunumu (13 Sayfa)',
-      filename: 'FOLD_FORM_Teknolojisi.pdf'
+      url: 'assets/docs/FOLD_AND_FORM_EN.pdf',
+      title: 'Fold & Form PVC Pipe Lining Presentation (ENG - 13 Sayfa)',
+      filename: 'FOLD_AND_FORM_EN.pdf'
+    },
+    'hose': {
+      url: 'assets/docs/HOSE_LINER_EN.pdf',
+      title: 'Hose Liner Flexible CIPP System Presentation (ENG - 12 Sayfa)',
+      filename: 'HOSE_LINER_EN.pdf'
+    },
+    'ref': {
+      url: 'assets/docs/KANALTEK_Referanslar_2026.pdf',
+      title: 'KANALTEK Resmi Referanslar ve İdari Kabul Belgeleri Listesi 2026 (4 Sayfa)',
+      filename: 'KANALTEK_Referanslar_2026.pdf'
+    },
+    'iso-9001': {
+      url: 'assets/docs/ISO_9001.pdf',
+      title: 'ISO 9001:2015 Kalite Yönetim Sistemi Sertifikası',
+      filename: 'ISO_9001.pdf'
+    },
+    'iso-14001': {
+      url: 'assets/docs/ISO_14001.pdf',
+      title: 'ISO 14001:2015 Çevre Yönetim Sistemi Sertifikası',
+      filename: 'ISO_14001.pdf'
+    },
+    'iso-45001': {
+      url: 'assets/docs/ISO_45001.pdf',
+      title: 'ISO 45001:2018 İş Sağlığı ve Güvenliği Yönetim Sistemi Sertifikası',
+      filename: 'ISO_45001.pdf'
+    },
+    'iso-10002': {
+      url: 'assets/docs/ISO_10002.pdf',
+      title: 'ISO 10002:2018 Müşteri Memnuniyeti ve Şikayet Yönetim Sertifikası',
+      filename: 'ISO_10002.pdf'
     }
   };
 
+  // Aliases for compatibility
+  docMap['cipp-en'] = docMap['cipp'];
+  docMap['fold-en'] = docMap['fold'];
+  docMap['hose-en'] = docMap['hose'];
+  docMap['sunum'] = docMap['sunum-tr'];
+  docMap['iso9001'] = docMap['iso-9001'];
+  docMap['iso14001'] = docMap['iso-14001'];
+  docMap['iso45001'] = docMap['iso-45001'];
+  docMap['iso10002'] = docMap['iso-10002'];
+
   function setDocument(key) {
-    const doc = docMap[key] || docMap['ref'];
-    iframe.src = doc.url;
+    const doc = docMap[key] || docMap['sunum-tr'];
+    iframe.src = doc.url + '#toolbar=1&navpanes=0';
     if (modalTitle) modalTitle.textContent = doc.title;
     if (downloadLink) {
       downloadLink.href = doc.url;
@@ -172,7 +212,9 @@ function initPdfModal() {
     }
 
     tabButtons.forEach(tab => {
-      if (tab.getAttribute('data-doc') === doc.url) {
+      const tabKey = tab.getAttribute('data-pdf');
+      const tabDoc = tab.getAttribute('data-doc');
+      if (tabKey === key || (docMap[tabKey] && docMap[tabKey].url === doc.url) || tabDoc === doc.url) {
         tab.classList.add('active');
       } else {
         tab.classList.remove('active');
@@ -180,7 +222,7 @@ function initPdfModal() {
     });
   }
 
-  function openModal(defaultKey = 'ref') {
+  function openModal(defaultKey = 'sunum-tr') {
     setDocument(defaultKey);
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -196,22 +238,27 @@ function initPdfModal() {
   openButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const pdfKey = btn.getAttribute('data-pdf') || 'ref';
+      const pdfKey = btn.getAttribute('data-pdf') || 'sunum-tr';
       openModal(pdfKey);
     });
   });
 
   tabButtons.forEach(tab => {
     tab.addEventListener('click', () => {
-      const docUrl = tab.getAttribute('data-doc');
-      let foundKey = 'ref';
-      for (const [key, value] of Object.entries(docMap)) {
-        if (value.url === docUrl) {
-          foundKey = key;
-          break;
+      const pdfKey = tab.getAttribute('data-pdf');
+      if (pdfKey && docMap[pdfKey]) {
+        setDocument(pdfKey);
+      } else {
+        const docUrl = tab.getAttribute('data-doc');
+        let foundKey = 'sunum-tr';
+        for (const [key, value] of Object.entries(docMap)) {
+          if (value.url === docUrl) {
+            foundKey = key;
+            break;
+          }
         }
+        setDocument(foundKey);
       }
-      setDocument(foundKey);
     });
   });
 

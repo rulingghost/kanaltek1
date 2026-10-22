@@ -170,26 +170,41 @@ function initMobileModals() {
   const pdfTabs = document.querySelectorAll('.m-pdf-tab-btn');
 
   const pdfFiles = {
-    ref: { title: 'Resmi Referans Dokümanı (2026)', url: 'assets/docs/KANALTEK_Referanslar_2026.pdf' },
-    cipp: { title: 'CIPP UV Sistem Sunumu', url: 'assets/docs/KANALTEK_CIPP_UV_Katalog.pdf' },
-    fold: { title: 'Fold & Form PVC Sunumu', url: 'assets/docs/KANALTEK_Fold_and_Form_Katalog.pdf' }
+    'sunum-tr': { title: 'KANALTEK Sunum (TR - 34 Sayfa)', url: 'assets/docs/KANALTEK_Sunum_TR.pdf' },
+    'cipp': { title: 'CIPP UV Sistem Sunumu (ENG - 21 Sayfa)', url: 'assets/docs/CIPP_UV_Presentation_EN.pdf' },
+    'fold': { title: 'Fold & Form PVC Sunumu (ENG - 13 Sayfa)', url: 'assets/docs/FOLD_AND_FORM_EN.pdf' },
+    'hose': { title: 'Hose Liner Sunumu (ENG - 12 Sayfa)', url: 'assets/docs/HOSE_LINER_EN.pdf' },
+    'ref': { title: 'Resmi Referans Dokümanı (2026)', url: 'assets/docs/KANALTEK_Referanslar_2026.pdf' },
+    'iso-9001': { title: 'ISO 9001:2015 Kalite Yönetim Sistemi', url: 'assets/docs/ISO_9001.pdf' },
+    'iso-14001': { title: 'ISO 14001:2015 Çevre Yönetim Sistemi', url: 'assets/docs/ISO_14001.pdf' },
+    'iso-45001': { title: 'ISO 45001:2018 İş Sağlığı ve Güvenliği', url: 'assets/docs/ISO_45001.pdf' },
+    'iso-10002': { title: 'ISO 10002:2018 Müşteri Memnuniyeti Sistemi', url: 'assets/docs/ISO_10002.pdf' }
   };
+  pdfFiles['cipp-en'] = pdfFiles['cipp'];
+  pdfFiles['fold-en'] = pdfFiles['fold'];
+  pdfFiles['hose-en'] = pdfFiles['hose'];
+  pdfFiles['sunum'] = pdfFiles['sunum-tr'];
+  pdfFiles['iso9001'] = pdfFiles['iso-9001'];
+  pdfFiles['iso14001'] = pdfFiles['iso-14001'];
+  pdfFiles['iso45001'] = pdfFiles['iso-45001'];
+  pdfFiles['iso10002'] = pdfFiles['iso-10002'];
 
   function setPdf(key) {
-    const doc = pdfFiles[key] || pdfFiles.ref;
+    const doc = pdfFiles[key] || pdfFiles['sunum-tr'];
     const titleEl = document.getElementById('mPdfTitle');
     if (titleEl) titleEl.textContent = doc.title;
     if (pdfIframe) pdfIframe.src = doc.url + '#toolbar=0&navpanes=0';
 
     pdfTabs.forEach(b => {
-      b.classList.toggle('active', b.getAttribute('data-pdf') === key);
+      const bKey = b.getAttribute('data-pdf');
+      b.classList.toggle('active', bKey === key || (pdfFiles[bKey] && pdfFiles[bKey].url === doc.url));
     });
   }
 
   openPdfBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const key = btn.getAttribute('data-pdf') || 'ref';
+      const key = btn.getAttribute('data-pdf') || 'sunum-tr';
       setPdf(key);
       if (pdfModal) {
         pdfModal.classList.add('active');
